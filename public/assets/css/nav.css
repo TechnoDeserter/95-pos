@@ -1,0 +1,13 @@
+
+.navbar-item {
+        &.is-hoverable:hover {
+            .navbar-dropdown {
+                display: block;
+            }
+        }
+    }
+.navlogo {
+    background-image: url("../img/BTP.jpg");
+    background-size: cover;
+    
+}
