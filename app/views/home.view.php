@@ -54,7 +54,7 @@
                 </form>
             </div>
         </div>
-        <div onclick="add_item(event)" class="js-products d-flex" style="flex-wrap: wrap; height: 85%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
+        <div onclick="add_item(event)" class="js-products d-flex" style="flex-wrap: wrap; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
             <!-- Add product items dynamically -->
         </div>
     </div>
@@ -271,7 +271,7 @@
     <img src="${data.image}" class="rounded-border" style="width: 65px; height: 65px;">
   </td> 
   <td class="text-dark">
-    <div style="font-size: 18px; font-weight: 500">${data.description}</div>
+    <div style="font-size: 14px; font-weight: 500">${data.description}</div>
     <div class="input-group my-3">
       <button index="${index}" onclick="change_qty('down',event)" class="btn btn-outline-primary" type="submit"><i class="fa fa-minus"></i></button>
       <input index="${index}" onblur="change_qty('input',event)" type="text" class="border-primary form-control" placeholder="1" value="${data.qty}" oninput="validateInput(this)">
