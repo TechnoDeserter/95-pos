@@ -1,182 +1,92 @@
-<?php
+<?php 
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-	//line code 2 for php desktop
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+	{
 
-	$WshShell = new COM("WScript.Shell");
-	//$obj = $WshShell->Run("cmd /c wscript.exe file.vbs",0, true); 
-	$obj = $WshShell->Run("cmd /c wscript.exe " . ABSPATH . "/file.vbs", 0, true);
-
-	$WshShell = new COM("WScript.Shell");
-	//$obj = $WshShell->Run("cmd /c wscript.exe file.vbs",0, true);
-	$obj = $WshShell->Run("cmd /c wscript.exe " . ABSPATH . "/file.vbs", 0, true);
-
-	$WshShell = new COM("WScript.Shell");
-	//$obj = $WshShell->Run("cmd /c wscript.exe file.vbs",0, true);
-	$obj = $WshShell->Run("cmd /c wscript.exe " . ABSPATH . "/file.vbs", 0, true);
-
-	$WshShell = new COM("WScript.Shell");
-	//$obj = $WshShell->Run("cmd /c wscript.exe file.vbs",0, true);
-	$obj = $WshShell->Run("cmd /c wscript.exe " . ABSPATH . "/file.vbs", 0, true);
-	$WshShell = new COM("WScript.Shell");
-	//$obj = $WshShell->Run("cmd /c wscript.exe file.vbs",0, true);
-	$obj = $WshShell->Run("cmd /c wscript.exe " . ABSPATH . "/file.vbs", 0, true);
-}
+ 		$WshShell = new COM("WScript.Shell");
+ 		///$obj = $WshShell->Run("cmd /c wscript.exe www/public/file.vbs",0, true); 
+ 		$obj = $WshShell->Run("cmd /c wscript.exe ".ABSPATH."/file.vbs",0, true); 
+ 		
+ 		$WshShell = new COM("WScript.Shell");
+ 		///$obj = $WshShell->Run("cmd /c wscript.exe www/public/file.vbs",0, true); 
+ 		$obj = $WshShell->Run("cmd /c wscript.exe ".ABSPATH."/file.vbs",0, true); 
+  
+ 	 
+	}
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Beyond The Page</title>
+	<title><?=esc(APP_NAME)?></title>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/all.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/solid.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
-	<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/JsBarcode.all.min.js"></script>
-
-
-
-	<link href="assets/css/modals.css" rel="stylesheet">
 </head>
-
 <body>
+	<?php 
 
+		$vars = $_GET['vars'] ?? "";
 
-	<?php
-
-	$vars = $_GET['vars'] ?? "";
-
-	$obj = json_decode($_GET['vars'], true);
+		$obj = json_decode($vars,true);
 
 	?>
+<?php if(is_array($obj)):?>
 
-	<?php if (is_array($obj)) : ?>
-		<?php
+	<center>
+		<h1><?=$obj['company']?></h1>
+		<h4>Receipt</h4>
+		<div><i><?=date("jS F, Y H:i a")?></i></div>
+	</center>
 
-		$receipt = get_receipt_no('receipt_no');
+	<table class="table table-striped">
+		<tr>
+			<th>Qty</th><th>Description</th><th>@</th><th>Amount</th>
+		</tr>
 
-		?>
+		<?php foreach ($obj['data'] as $row):?>
+			<tr>
+				<td><?=$row['qty']?></td><td><?=$row['description']?></td><td>$<?=$row['amount']?></td><td>$<?=number_format($row['qty'] * $row['amount'],2)?></td>
+			</tr>
+		<?php endforeach;?>
 
-		<center>
-			<h1>Beyond The Page</h1>
-			<h6><i>Receipt#: <?= ($receipt) - 1 ?></i></h6>
-			<div><i><?= date("jS F, Y H:i a") ?></i></div>
-		</center>
+		<tr>
+			<td colspan="2"></td><td><b>Total:</b></td><td><b><?=$obj['gtotal']?></b></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td><td>Amount paid:</td><td><?=$obj['amount']?></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td><td>Change:</td><td><?=$obj['change']?></td>
+		</tr>
+		
+		
+	</table>
 
-		<div class="container-fluid">
+	<center><p><i>Thanks for shopping with us!</i></p></center>
+<?php endif;?>
 
-			<table class="table table-borderless">
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>Qty</th>
-					<th>Description</th>
-					<th>Price</th>
-					<th>Sub Total</th>
-				</tr>
+<script>
+	
+	window.print();
 
+	var ajax = new XMLHttpRequest();
 
-				<?php foreach ($obj['data'] as $row) : ?>
-					<tr>
-						<td><?= $row['qty'] ?></td>
-						<td><?= $row['description'] ?></td>
-						<td>₱<?= $row['amount'] ?></td>
-						<td>₱<?= number_format($row['qty'] * $row['amount'], 2) ?></td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
+	ajax.addEventListener('readystatechange',function(){
 
-			<table class="table table-borderless">
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td colspan="3"><b> Total:</b></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><b>₱<?= $obj['gtotal'] ?></b></td>
-				</tr>
-				<tr>
-					<td colspan="3"> Cash:</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>₱<?= $obj['amount'] ?></td>
-				</tr>
-				<tr>
-					<td colspan="3"> Change:</td>
-					<td>
-					<td></td>
-					</td>
-					<td></td>
-					<td>₱<?= $obj['change'] ?></td>
-				</tr>
-
-
-			</table>
-		</div>
-
-		<br>
-		<center>
-			<p>
-				<svg class="barcode-cell" data-barcode="<?= ($receipt) - 1 ?>"></svg>
-			</p>
-			<p><b>Thank you for buying!</b></p>
-		</center>
-
-	<?php endif; ?>
-
-	<script>
-		function generateReceiptBarcode(barcodeValue) {
-			JsBarcode(".barcode-cell", barcodeValue, {
-				format: "CODE128",
-				width: 2, // Adjust the width as needed
-				height: 50, // Adjust the height as needed
-			});
+		if(ajax.readyState == 4)
+		{
+			//console.log(ajax.responseText);
 		}
+	});
 
-		// Wait for the document to finish loading
-		document.addEventListener("DOMContentLoaded", function() {
-			// Generate barcode for the receipt number
-			generateReceiptBarcode(22222<?= ($receipt) - 1 ?>);
+	ajax.open('POST','',true);
+	//ajax.send();
 
-			// Print the receipt
-			window.print();
-
-
-			var ajax = new XMLHttpRequest();
-
-			ajax.addEventListener('readystatechange', function() {
-
-				if (ajax.readyState == 4) {
-					//console.log(ajax.responseText);
-				}
-			});
-
-			ajax.open('POST', '', true);
-			ajax.send();
-
-		});
-	</script>
-
+</script>
 </body>
-
 </html>
