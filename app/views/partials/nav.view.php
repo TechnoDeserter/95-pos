@@ -10,7 +10,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php if (Auth::access('cashier')) : ?>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php?page=home" style="color: white;">My POS</a>
+                        <a class="nav-link active" aria-current="page" href="index.php?page=home" style="color: white;">POS</a>
                     </li>
                 <?php endif; ?>
 
